@@ -20,7 +20,9 @@ function init() {
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.domElement.className = 'webgl' ;
     document.body.appendChild(renderer.domElement);
+
 
     const aspect = window.innerWidth / window.innerHeight;
 
