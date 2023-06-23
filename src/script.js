@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
 
 
 let cameraPersp, cameraOrtho, currentCamera;
@@ -17,11 +18,14 @@ render();
 
 function init() {
 
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({alpha:true , antialias : true});
+    renderer.xr.enabled = true ; 
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.domElement.className = 'webgl' ;
+    
     document.body.appendChild(renderer.domElement);
+    document.body.appendChild( ARButton.createButton(renderer))
 
 
     const aspect = window.innerWidth / window.innerHeight;
@@ -36,9 +40,12 @@ function init() {
     scene = new THREE.Scene();
     scene.add(new THREE.GridHelper(1000, 10, 0x888888, 0x444444));
 
-    const light = new THREE.DirectionalLight(0xffffff, 2);
-    light.position.set(1, 1, 1);
+    const light = new THREE.DirectionalLight(0xffffff, 10);
+    const light2 = new THREE.DirectionalLight(0xffffff, 10);
+    light.position.set(1, 10, 10);
+    light2.position.set(10, 1, 1);
     scene.add(light);
+    scene.add(light2);
 
 
     const geometry = new THREE.BoxGeometry(200, 200, 200);
@@ -61,16 +68,15 @@ function init() {
 
 
     new GLTFLoader()
-        .load('Horse.glb ', (gltf) => {
+        .load('https://xarwin-assests-spaces-prod.fra1.digitaloceanspaces.com/ZH5USSvI2uNI6EKAmJOdmCyZET02/car.glb', (gltf) => {
             scene.add(gltf.scene);
             group.add(gltf.scene);
             glbModel = gltf.scene.children[0];
-            // control.attach(glbModel);
             scene.add(control)
         })
 
     new GLTFLoader()
-        .load('Parrot.glb ', (gltf) => {
+        .load('https://xarwin-assests-spaces-prod.fra1.digitaloceanspaces.com/ZH5USSvI2uNI6EKAmJOdmCyZET02/futuristic_building.glb', (gltf) => {
             scene.add(gltf.scene);
             group.add(gltf.scene);
             glbModel = gltf.scene.children[0];
